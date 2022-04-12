@@ -16,8 +16,8 @@ def make_batch():
             seq[i] = seq[i] + 'P' * (n_step - len(seq[i]))
 
         input = [num_dic[n] for n in seq[0]]
-        output = [num_dic[n] for n in ('S' + seq[1])]
-        target = [num_dic[n] for n in (seq[1] + 'E')]
+        output = [num_dic[n] for n in f'S{seq[1]}']
+        target = [num_dic[n] for n in f'{seq[1]}E']
 
         input_batch.append(np.eye(n_class)[input])
         output_batch.append(np.eye(n_class)[output])
@@ -57,8 +57,7 @@ class Seq2Seq(nn.Module):
         # outputs : [max_len+1(=6), batch_size, num_directions(=1) * n_hidden(=128)]
         outputs, _ = self.dec_cell(dec_input, enc_states)
 
-        model = self.fc(outputs) # model : [max_len+1(=6), batch_size, n_class]
-        return model
+        return self.fc(outputs)
 
 if __name__ == '__main__':
     n_step = 5

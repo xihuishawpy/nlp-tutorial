@@ -22,8 +22,12 @@ def make_batch():
 
         # MASK LM
         n_pred =  min(max_pred, max(1, int(round(len(input_ids) * 0.15)))) # 15 % of tokens in one sentence
-        cand_maked_pos = [i for i, token in enumerate(input_ids)
-                          if token != word_dict['[CLS]'] and token != word_dict['[SEP]']]
+        cand_maked_pos = [
+            i
+            for i, token in enumerate(input_ids)
+            if token not in [word_dict['[CLS]'], word_dict['[SEP]']]
+        ]
+
         shuffle(cand_maked_pos)
         masked_tokens, masked_pos = [], []
         for pos in cand_maked_pos[:n_pred]:
@@ -196,10 +200,10 @@ if __name__ == '__main__':
     word_dict = {'[PAD]': 0, '[CLS]': 1, '[SEP]': 2, '[MASK]': 3}
     for i, w in enumerate(word_list):
         word_dict[w] = i + 4
-    number_dict = {i: w for i, w in enumerate(word_dict)}
+    number_dict = dict(enumerate(word_dict))
     vocab_size = len(word_dict)
 
-    token_list = list()
+    token_list = []
     for sentence in sentences:
         arr = [word_dict[s] for s in sentence.split()]
         token_list.append(arr)
@@ -234,5 +238,5 @@ if __name__ == '__main__':
     print('predict masked tokens list : ',[pos for pos in logits_lm if pos != 0])
 
     logits_clsf = logits_clsf.data.max(1)[1].data.numpy()[0]
-    print('isNext : ', True if isNext else False)
-    print('predict isNext : ',True if logits_clsf else False)
+    print('isNext : ', bool(isNext))
+    print('predict isNext : ', bool(logits_clsf))

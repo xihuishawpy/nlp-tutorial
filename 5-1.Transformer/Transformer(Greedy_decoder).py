@@ -179,7 +179,7 @@ def greedy_decoder(model, enc_input, start_symbol):
     enc_outputs, enc_self_attns = model.encoder(enc_input)
     dec_input = torch.zeros(1, 5).type_as(enc_input.data)
     next_symbol = start_symbol
-    for i in range(0, 5):
+    for i in range(5):
         dec_input[0][i] = next_symbol
         dec_outputs, _, _ = model.decoder(dec_input, enc_input, enc_outputs)
         projected = model.projection(dec_outputs)
@@ -206,7 +206,7 @@ if __name__ == '__main__':
     src_vocab_size = len(src_vocab)
 
     tgt_vocab = {'P': 0, 'i': 1, 'want': 2, 'a': 3, 'beer': 4, 'S': 5, 'E': 6}
-    number_dict = {i: w for i, w in enumerate(tgt_vocab)}
+    number_dict = dict(enumerate(tgt_vocab))
     tgt_vocab_size = len(tgt_vocab)
 
     src_len = 5 # length of source

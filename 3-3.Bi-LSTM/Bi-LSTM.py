@@ -12,7 +12,7 @@ def make_batch():
     words = sentence.split()
     for i, word in enumerate(words[:-1]):
         input = [word_dict[n] for n in words[:(i + 1)]]
-        input = input + [0] * (max_len - len(input))
+        input += [0] * (max_len - len(input))
         target = word_dict[words[i + 1]]
         input_batch.append(np.eye(n_class)[input])
         target_batch.append(target)
@@ -35,8 +35,7 @@ class BiLSTM(nn.Module):
 
         outputs, (_, _) = self.lstm(input, (hidden_state, cell_state))
         outputs = outputs[-1]  # [batch_size, n_hidden]
-        model = self.W(outputs) + self.b  # model : [batch_size, n_class]
-        return model
+        return self.W(outputs) + self.b
 
 if __name__ == '__main__':
     n_hidden = 5 # number of hidden units in one cell
@@ -48,7 +47,7 @@ if __name__ == '__main__':
     )
 
     word_dict = {w: i for i, w in enumerate(list(set(sentence.split())))}
-    number_dict = {i: w for i, w in enumerate(list(set(sentence.split())))}
+    number_dict = dict(enumerate(list(set(sentence.split()))))
     n_class = len(word_dict)
     max_len = len(sentence.split())
 

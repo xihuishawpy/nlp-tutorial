@@ -1,6 +1,7 @@
 '''
   code by Tae Hwan Jung(Jeff Jung) @graykode
 '''
+
 import tensorflow as tf
 import numpy as np
 
@@ -13,7 +14,7 @@ sentence = (
 )
 
 word_dict = {w: i for i, w in enumerate(list(set(sentence.split())))}
-number_dict = {i: w for i, w in enumerate(list(set(sentence.split())))}
+number_dict = dict(enumerate(list(set(sentence.split()))))
 n_class = len(word_dict)
 n_step = len(sentence.split())
 n_hidden = 5
@@ -25,7 +26,7 @@ def make_batch(sentence):
     words = sentence.split()
     for i, word in enumerate(words[:-1]):
         input = [word_dict[n] for n in words[:(i + 1)]]
-        input = input + [0] * (n_step - len(input))
+        input += [0] * (n_step - len(input))
         target = word_dict[words[i + 1]]
         input_batch.append(np.eye(n_class)[input])
         target_batch.append(np.eye(n_class)[target])
@@ -70,4 +71,4 @@ for epoch in range(10000):
 
 predict =  sess.run([prediction], feed_dict={X: input_batch})
 print(sentence)
-print([number_dict[n] for n in [pre for pre in predict[0]]])
+print([number_dict[n] for n in list(predict[0])])

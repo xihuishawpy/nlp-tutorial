@@ -42,9 +42,7 @@ for i in range(1, len(word_sequence) - 1):
     target = word_dict[word_sequence[i]]
     context = [word_dict[word_sequence[i - 1]], word_dict[word_sequence[i + 1]]]
 
-    for w in context:
-        skip_grams.append([target, w])
-
+    skip_grams.extend([target, w] for w in context)
 # Model
 inputs = tf.placeholder(tf.int32, shape=[batch_size])
 labels = tf.placeholder(tf.int32, shape=[batch_size, 1]) # To use tf.nn.nce_loss, [batch_size, 1]

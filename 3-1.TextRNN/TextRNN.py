@@ -32,8 +32,7 @@ class TextRNN(nn.Module):
         # outputs : [n_step, batch_size, num_directions(=1) * n_hidden]
         # hidden : [num_layers(=1) * num_directions(=1), batch_size, n_hidden]
         outputs = outputs[-1] # [batch_size, num_directions(=1) * n_hidden]
-        model = self.W(outputs) + self.b # model : [batch_size, n_class]
-        return model
+        return self.W(outputs) + self.b
 
 if __name__ == '__main__':
     n_step = 2 # number of cells(= number of Step)
@@ -44,7 +43,7 @@ if __name__ == '__main__':
     word_list = " ".join(sentences).split()
     word_list = list(set(word_list))
     word_dict = {w: i for i, w in enumerate(word_list)}
-    number_dict = {i: w for i, w in enumerate(word_list)}
+    number_dict = dict(enumerate(word_list))
     n_class = len(word_dict)
     batch_size = len(sentences)
 

@@ -2,6 +2,7 @@
   code by Tae Hwan Jung(Jeff Jung) @graykode
   Reference : https://github.com/prakashpandey9/Text-Classification-Pytorch/blob/master/models/LSTM_Attn.py
 '''
+
 import tensorflow as tf
 import matplotlib.pyplot as plt
 import numpy as np
@@ -23,9 +24,9 @@ word_list = list(set(word_list))
 word_dict = {w: i for i, w in enumerate(word_list)}
 vocab_size = len(word_dict)
 
-input_batch = []
-for sen in sentences:
-    input_batch.append(np.asarray([word_dict[n] for n in sen.split()]))
+input_batch = [
+    np.asarray([word_dict[n] for n in sen.split()]) for sen in sentences
+]
 
 target_batch = []
 for out in labels:

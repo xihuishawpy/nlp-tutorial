@@ -33,8 +33,7 @@ class NNLM(nn.Module):
         X = self.C(X) # X : [batch_size, n_step, m]
         X = X.view(-1, n_step * m) # [batch_size, n_step * m]
         tanh = torch.tanh(self.d + self.H(X)) # [batch_size, n_hidden]
-        output = self.b + self.W(X) + self.U(tanh) # [batch_size, n_class]
-        return output
+        return self.b + self.W(X) + self.U(tanh)
 
 if __name__ == '__main__':
     n_step = 2 # number of steps, n-1 in paper
@@ -46,7 +45,7 @@ if __name__ == '__main__':
     word_list = " ".join(sentences).split()
     word_list = list(set(word_list))
     word_dict = {w: i for i, w in enumerate(word_list)}
-    number_dict = {i: w for i, w in enumerate(word_list)}
+    number_dict = dict(enumerate(word_list))
     n_class = len(word_dict)  # number of Vocabulary
 
     model = NNLM()

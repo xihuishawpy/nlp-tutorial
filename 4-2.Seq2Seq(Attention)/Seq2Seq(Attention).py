@@ -81,7 +81,7 @@ if __name__ == '__main__':
     word_list = " ".join(sentences).split()
     word_list = list(set(word_list))
     word_dict = {w: i for i, w in enumerate(word_list)}
-    number_dict = {i: w for i, w in enumerate(word_list)}
+    number_dict = dict(enumerate(word_list))
     n_class = len(word_dict)  # vocab list
 
     # hidden : [num_layers(=1) * num_directions(=1), batch_size, n_hidden]

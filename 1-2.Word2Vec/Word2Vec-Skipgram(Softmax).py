@@ -28,8 +28,7 @@ class Word2Vec(nn.Module):
     def forward(self, X):
         # X : [batch_size, voc_size]
         hidden_layer = self.W(X) # hidden_layer : [batch_size, embedding_size]
-        output_layer = self.WT(hidden_layer) # output_layer : [batch_size, voc_size]
-        return output_layer
+        return self.WT(hidden_layer)
 
 if __name__ == '__main__':
     batch_size = 2 # mini-batch size
@@ -49,9 +48,7 @@ if __name__ == '__main__':
     for i in range(1, len(word_sequence) - 1):
         target = word_dict[word_sequence[i]]
         context = [word_dict[word_sequence[i - 1]], word_dict[word_sequence[i + 1]]]
-        for w in context:
-            skip_grams.append([target, w])
-
+        skip_grams.extend([target, w] for w in context)
     model = Word2Vec()
 
     criterion = nn.CrossEntropyLoss()

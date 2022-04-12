@@ -12,7 +12,7 @@ sentences = ['ich mochte ein bier P', 'S i want a beer', 'i want a beer E']
 word_list = " ".join(sentences).split()
 word_list = list(set(word_list))
 word_dict = {w: i for i, w in enumerate(word_list)}
-number_dict = {i: w for i, w in enumerate(word_list)}
+number_dict = dict(enumerate(word_list))
 n_class = len(word_dict)  # vocab list
 
 # Parameter
@@ -40,10 +40,10 @@ def get_att_score(dec_output, enc_output):  # enc_output [n_step, n_hidden]
     return tf.tensordot(dec_output, score, 1)  # inner product make scalar value
 
 def get_att_weight(dec_output, enc_outputs):
-    attn_scores = []  # list of attention scalar : [n_step]
     enc_outputs = tf.transpose(enc_outputs, [1, 0, 2])  # enc_outputs : [n_step, batch_size, n_hidden]
-    for i in range(n_step):
-        attn_scores.append(get_att_score(dec_output, enc_outputs[i]))
+    attn_scores = [
+        get_att_score(dec_output, enc_outputs[i]) for i in range(n_step)
+    ]
 
     # Normalize scores to weights in range 0 to 1
     return tf.reshape(tf.nn.softmax(attn_scores), [1, 1, -1])  # [1, 1, n_step]

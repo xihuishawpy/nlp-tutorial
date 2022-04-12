@@ -1,14 +1,15 @@
 '''
   code by Tae Hwan Jung(Jeff Jung) @graykode
 '''
+
 import tensorflow as tf
 import numpy as np
 
 tf.reset_default_graph()
 
-char_arr = [c for c in 'abcdefghijklmnopqrstuvwxyz']
+char_arr = list('abcdefghijklmnopqrstuvwxyz')
 word_dict = {n: i for i, n in enumerate(char_arr)}
-number_dict = {i: w for i, w in enumerate(char_arr)}
+number_dict = dict(enumerate(char_arr))
 n_class = len(word_dict) # number of class(=number of vocab)
 
 seq_data = ['make', 'need', 'coal', 'word', 'love', 'hate', 'live', 'home', 'hash', 'star']

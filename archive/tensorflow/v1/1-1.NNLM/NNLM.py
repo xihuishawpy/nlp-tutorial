@@ -9,7 +9,7 @@ sentences = [ "i like dog", "i love coffee", "i hate milk"]
 word_list = " ".join(sentences).split()
 word_list = list(set(word_list))
 word_dict = {w: i for i, w in enumerate(word_list)}
-number_dict = {i: w for i, w in enumerate(word_list)}
+number_dict = dict(enumerate(word_list))
 n_class = len(word_dict) # number of Vocabulary
 
 # NNLM Parameter

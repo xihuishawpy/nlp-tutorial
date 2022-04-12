@@ -31,8 +31,7 @@ class TextCNN(nn.Module):
 
         h_pool = torch.cat(pooled_outputs, len(filter_sizes)) # [batch_size(=6), output_height(=1), output_width(=1), output_channel(=3) * 3]
         h_pool_flat = torch.reshape(h_pool, [-1, self.num_filters_total]) # [batch_size(=6), output_height * output_width * (output_channel * 3)]
-        model = self.Weight(h_pool_flat) + self.Bias # [batch_size, num_classes]
-        return model
+        return self.Weight(h_pool_flat) + self.Bias
 
 if __name__ == '__main__':
     embedding_size = 2 # embedding size
@@ -56,7 +55,7 @@ if __name__ == '__main__':
     optimizer = optim.Adam(model.parameters(), lr=0.001)
 
     inputs = torch.LongTensor([np.asarray([word_dict[n] for n in sen.split()]) for sen in sentences])
-    targets = torch.LongTensor([out for out in labels]) # To using Torch Softmax Loss function
+    targets = torch.LongTensor(list(labels))
 
     # Training
     for epoch in range(5000):

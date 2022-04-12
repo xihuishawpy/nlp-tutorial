@@ -32,16 +32,15 @@ class TextLSTM(nn.Module):
 
         outputs, (_, _) = self.lstm(input, (hidden_state, cell_state))
         outputs = outputs[-1]  # [batch_size, n_hidden]
-        model = self.W(outputs) + self.b  # model : [batch_size, n_class]
-        return model
+        return self.W(outputs) + self.b
 
 if __name__ == '__main__':
     n_step = 3 # number of cells(= number of Step)
     n_hidden = 128 # number of hidden units in one cell
 
-    char_arr = [c for c in 'abcdefghijklmnopqrstuvwxyz']
+    char_arr = list('abcdefghijklmnopqrstuvwxyz')
     word_dict = {n: i for i, n in enumerate(char_arr)}
-    number_dict = {i: w for i, w in enumerate(char_arr)}
+    number_dict = dict(enumerate(char_arr))
     n_class = len(word_dict)  # number of class(=number of vocab)
 
     seq_data = ['make', 'need', 'coal', 'word', 'love', 'hate', 'live', 'home', 'hash', 'star']

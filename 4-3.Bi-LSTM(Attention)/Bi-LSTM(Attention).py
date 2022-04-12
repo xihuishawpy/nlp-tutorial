@@ -58,7 +58,7 @@ if __name__ == '__main__':
     optimizer = optim.Adam(model.parameters(), lr=0.001)
 
     inputs = torch.LongTensor([np.asarray([word_dict[n] for n in sen.split()]) for sen in sentences])
-    targets = torch.LongTensor([out for out in labels])  # To using Torch Softmax Loss function
+    targets = torch.LongTensor(list(labels))
 
     # Training
     for epoch in range(5000):

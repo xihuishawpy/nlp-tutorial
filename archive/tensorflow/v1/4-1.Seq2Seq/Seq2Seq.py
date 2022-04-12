@@ -2,6 +2,7 @@
   code by Tae Hwan Jung(Jeff Jung) @graykode
   reference : https://github.com/golbin/TensorFlow-Tutorials/blob/master/10%20-%20RNN/03%20-%20Seq2Seq.py
 '''
+
 import tensorflow as tf
 import numpy as np
 
@@ -10,7 +11,7 @@ tf.reset_default_graph()
 # E: Symbol that shows starting of decoding output
 # P: Symbol that will fill in blank sequence if current batch data size is short than time steps
 
-char_arr = [c for c in 'SEPabcdefghijklmnopqrstuvwxyz']
+char_arr = list('SEPabcdefghijklmnopqrstuvwxyz')
 num_dic = {n: i for i, n in enumerate(char_arr)}
 
 seq_data = [['man', 'women'], ['black', 'white'], ['king', 'queen'], ['girl', 'boy'], ['up', 'down'], ['high', 'low']]
@@ -28,8 +29,8 @@ def make_batch(seq_data):
             seq[i] = seq[i] + 'P' * (n_step - len(seq[i]))
 
         input = [num_dic[n] for n in seq[0]]
-        output = [num_dic[n] for n in ('S' + seq[1])]
-        target = [num_dic[n] for n in (seq[1] + 'E')]
+        output = [num_dic[n] for n in f'S{seq[1]}']
+        target = [num_dic[n] for n in f'{seq[1]}E']
 
         input_batch.append(np.eye(n_class)[input])
         output_batch.append(np.eye(n_class)[output])
